@@ -7,17 +7,17 @@ var ArticleSchema = new Schema({
     
     title: {
       type: String,
-      required: true
+      //required: true
     },
     
     link: {
       type: String,
-      required: true
+      //required: true
     },
     
     summary: {
         type: String,
-        required: true
+        //required: true
     },
 
     createdAt: {

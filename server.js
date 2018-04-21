@@ -4,17 +4,13 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
 
-// Require request and cheerio for scraping
-var cheerio = require("cheerio");
 
 var PORT = process.env.PORT || 3000;
 var app = express();
+app.use(express.static(__dirname + '/public'));
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
-
-
-
 
 // Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,22 +21,16 @@ app.set("view engine", "handlebars");
 router = require('./controllers/route.js');
 app.use( router);
 
-
-  //app.use('./controllers/route.js');
- 
-
-
 // Use express.static to serve the public folder as a static directory
-app.use(express.static("public"));
+//app.use(express.static("public"));
 // If deployed, use the deployed database. Otherwise use the local mongoNews database
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoNews";
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
-// Database configuration
-mongoose.connect('mongodb://localhost/scraper');
-//var db = require("./models");
+
+
 
 // Start the server
 app.listen(PORT, function() {

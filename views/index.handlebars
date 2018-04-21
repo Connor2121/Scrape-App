@@ -1,5 +1,12 @@
-
-hello world
-
-{{summary}}
-
+{{#each news}}
+<div class="card">
+  <div class="card-header">
+    Featured
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{title}}</h5>
+    <p class="card-text">{{summary}}</p>
+    <p class="card-text">{{link}}</p>
+  </div>
+</div>
+{{/each}}

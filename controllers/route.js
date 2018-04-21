@@ -10,9 +10,9 @@ var app = express();
 var router = express.Router();
 
 
-//var db = require("../models");
+
 // Mongodb models
- var Article = require("../models/article");
+  var Article = require("../models/article");
 
 
 // Scrape data from one site and place it into the mongodb db
@@ -34,17 +34,15 @@ router.get("/scrape", function(req, res) {
       link: link
     });
 
-    var entry = new Article(results)
-//     entry.save(function(err, doc) {
-//   // Log any errors
-//   if (err) {
-//     console.log(err);
-//   }
-//   // Or log the doc
-//   else {
-//     console.log(doc);
-//   }
-// });
+    Article.create(results)
+    .then(function(dbArticle) {
+      // View the added result in the console
+      console.log(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      return res.json(err);
+    });
    
     
   });
@@ -54,7 +52,7 @@ router.get("/scrape", function(req, res) {
 });
 
 // Retrieve data from the db
-router.get("/all", function(req, res) {
+router.get("/articles", function(req, res) {
   // Find all results from the scrapedData collection in the db
   Article.find({}, function(error, found) {
     // Throw any errors to the console
@@ -68,28 +66,11 @@ router.get("/all", function(req, res) {
   });
 });
 
-// Default route renders the index handlebars view
-router.get('/', function(req, res){
-  Article
-    .find({})
-    .exec(function(err,data) {
-      //console.log(data)
-      if (err) return console.error(err);
-      // If successful render first data
-      
-        
-      res.render('index', { 
-        title: data.title,
-        summary: data.summary,
-        _id: data._id,
-        link: data.link,
-        comments: data.comments
-      });
-        
-      
-    
-      
-    })
-})
+
+router.get("/", function(req, res) {
+  Article.find({}, function(error, data) {
+    res.render("index", {news: data});
+  });
+});
 
 module.exports = router;

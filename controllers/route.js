@@ -9,7 +9,7 @@ var app = express();
 
 var router = express.Router();
 
-
+mongoose.Promise = Promise;
 
 // Mongodb models
   var Article = require("../models/article");
@@ -18,14 +18,14 @@ var router = express.Router();
 // Scrape data from one site and place it into the mongodb db
 router.get("/scrape", function(req, res) {
 
-  request("http://www.foxnews.com/us.html", function(error, response, html) {
+  request("https://stabmag.com/", function(error, response, html) {
   var $ = cheerio.load(html);
   var results = [];
-  $("article.article").each(function(i, element) {
+  $("div.grid-layout").each(function(i, element) {
 
-    var link = $(this).children('div.info').children('div.content').children('p.dek').children('a').attr('href');
-    var summary = $(this).children('div.info').children('div.content').children('p.dek').children('a').text();
-    var title = $(this).children('div.info').children('header.info-header').children('h.title').children('a').text();
+    var link = $(this).children('div.grid-item').children('div.stab-post-block').children('div.stab-post-block__primary-info').children('h2.feed-title').children('a').attr('href');
+    var summary = $(this).children('div.grid-item').children('div.stab-post-block').children('div.stab-post-block__primary-info').children('p').text();
+    var title = $(this).children('div.grid-item').children('div.stab-post-block').children('div.stab-post-block__primary-info').children('h2.feed-title').children('a').text();
 
     // Save these results in an object that we'll push into the results array we defined earlier
     results.push({
@@ -33,18 +33,22 @@ router.get("/scrape", function(req, res) {
       summary: summary,
       link: link
     });
-
-    Article.create(results)
-    .then(function(dbArticle) {
-      // View the added result in the console
-      console.log(dbArticle);
-    })
-    .catch(function(err) {
-      // If an error occurred, send it to the client
-      return res.json(err);
-    });
-   
-    
+    // Check database to see if story saved previously to database
+			Article.findOne({title: title}, function(err, articleRecord) {
+				if(err) {
+					console.log(err);
+				} else {
+					if(articleRecord == results.title) {
+						Article.create(results, function(err, record) {
+							if(err) throw err;
+              console.log("Record Added");
+              console.log(record);
+						});
+					} else {
+						console.log("No Record Added");
+					}					
+				}
+			});	
   });
   res.send(results);
 });

@@ -1,5 +1,4 @@
-$('scraper').on('click', function(event) {
-    $.getJSON('/scrape', function(data){
-        
-	});
+$('#scraper').on('click', function(event) {
+    event.preventDefault();
+   res.render('/scrape')
 })

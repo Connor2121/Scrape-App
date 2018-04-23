@@ -1,9 +1,9 @@
 <ul class="nav">
   <li class="nav-item">
-    <a class="nav-link active" href="#">Mongo Scraper</a>
+    <a class="nav-link active" href="/">Mongo Scraper</a>
   </li>
   <li class="nav-item">
-    <button id="scraper"> Scrape New Articles</button>
+    <a class="nav-link active" href="/scrape">Scrape New Articles</a>
   </li>
 </ul>
 
@@ -18,12 +18,12 @@
 {{#each news}}
 <div class="card">
   <div class="card-header">
-    Featured
+    <a href="https://stabmag.com{{this.link}}">
+      <h5 class="card-title">{{title}}</h5> 
+    </a>
   </div>
   <div class="card-body">
-    <h5 class="card-title">{{title}}</h5>
     <p class="card-text">{{summary}}</p>
-    <p class="card-text">{{link}}</p>
   </div>
 </div>
 {{/each}}

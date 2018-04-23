@@ -8,6 +8,7 @@ var Promise = require("bluebird");
 
 var PORT = process.env.PORT || 3000;
 var app = express();
+// Use express.static to serve the public folder as a static directory
 app.use(express.static(__dirname + '/public'));
 
 // If deployed, use the deployed database. Otherwise use the local mongoNews database
@@ -27,12 +28,7 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 router = require('./controllers/route.js');
-app.use( '/',router);
-
-// Use express.static to serve the public folder as a static directory
-//app.use(express.static("public"));
-
-
+app.use('/', router);
 
 
 // Start the server

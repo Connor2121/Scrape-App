@@ -55,7 +55,7 @@ router.get("/scrape", function (req, res) {
       results.summary = summary;
       results.link = link;
 
-      // Check database to see if article is repeat
+      // Check database to see if article is repeat-- runs as many times as articles
 			Article.findOne({'title': title}, function(err, article) {
 				if(err) {
 					console.log(err);
@@ -84,8 +84,8 @@ router.get("/articles/:id", function (req, res) {
     .populate("Comments")
     .then(function (article) {
       // Log any errors
-        //res.render("comments", {result: article});
-       res.json(article);
+        res.render("comments", {result: article});
+       //res.json(article);
       })
       .catch(function(err) {
         // If an error occurred, send it to the client
@@ -109,11 +109,4 @@ router.post("/articles/:id", function (req, res) {
     });
 });
       
-      
-           
-
-
-
-
-
 module.exports = router;

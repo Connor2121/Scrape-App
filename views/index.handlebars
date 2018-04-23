@@ -18,13 +18,14 @@
 {{#each news}}
 <div class="card">
   <div class="card-header">
-    <a href="https://stabmag.com{{this.link}}">
+    <a href="https://stabmag.com{{link}}">
       <h5 class="card-title">{{title}}</h5> 
     </a>
   </div>
   <div class="card-body">
     <p class="card-text">{{summary}}</p>
   </div>
+  <a href="/articles/{{_id}}" class="btn btn-primary">Comment</a>
 </div>
 {{/each}}
 </div>

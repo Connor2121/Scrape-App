@@ -12,8 +12,8 @@ var router = express.Router();
 mongoose.Promise = Promise;
 
 // Mongodb models
-var Article = require("../models/article");
-var Comment = require('../models/comment');
+var Article = require("../models/article.js");
+var Comment = require('../models/comment.js');
 
 
 router.get("/", function (req, res) {
